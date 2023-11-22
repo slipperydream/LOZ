@@ -1,8 +1,6 @@
 extends State
 class_name Idle
 
-
-
 func enter():
 	pass
 	
@@ -17,11 +15,12 @@ func update(_delta):
 	
 func physics_update(delta):
 	#player.sprite.play("idle")
-	if Input.is_action_just_pressed("move_left") or Input.is_action_just_pressed("move_right"):
-		Transitioned.emit(self, "walk")
+	var dir = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if dir != Vector2.ZERO:
+		Transitioned.emit(self, "move")
 		
-	if Input.is_action_just_pressed("jump"):
-		Transitioned.emit(self, "jump")
+	if Input.is_action_just_pressed("roll"):
+		Transitioned.emit(self, "roll")
 	
-	if Input.is_action_just_pressed("duck"):
-		Transitioned.emit(self, "duck")
+	if Input.is_action_just_pressed("attack"):
+		Transitioned.emit(self, "attack")
