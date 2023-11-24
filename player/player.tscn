@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b6w3r656nnust"]
+[gd_scene load_steps=20 format=3 uid="uid://b6w3r656nnust"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_i3u2w"]
 [ext_resource type="Texture2D" uid="uid://c75fjinv8je34" path="res://player/Samurai/SpriteSheet.png" id="2_84ccw"]
@@ -11,24 +11,109 @@
 [ext_resource type="Script" path="res://player/states/Move.gd" id="8_gwr51"]
 [ext_resource type="Script" path="res://player/states/Attack.gd" id="9_k6tq6"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3tfwx"]
+size = Vector2(16, 15)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7kvgn"]
 size = Vector2(7, 7.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_naac7"]
 size = Vector2(16, 15)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3tfwx"]
-size = Vector2(16, 15)
+[sub_resource type="Animation" id="Animation_50jtc"]
+resource_name = "idle"
+
+[sub_resource type="Animation" id="Animation_bdbsb"]
+resource_name = "move_down"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 4, 8, 12]
+}
+
+[sub_resource type="Animation" id="Animation_3co6i"]
+resource_name = "move_left"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [2, 6, 10, 14]
+}
+
+[sub_resource type="Animation" id="Animation_frr8k"]
+resource_name = "move_right"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 7, 11, 15]
+}
+
+[sub_resource type="Animation" id="Animation_3kgc4"]
+resource_name = "move_left"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [1, 5, 9, 13]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3d4sk"]
+_data = {
+"idle": SubResource("Animation_50jtc"),
+"move_down": SubResource("Animation_bdbsb"),
+"move_left": SubResource("Animation_3co6i"),
+"move_right": SubResource("Animation_frr8k"),
+"move_up": SubResource("Animation_3kgc4")
+}
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 position = Vector2(300, 300)
 script = ExtResource("1_i3u2w")
 speed = 80
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_3tfwx")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_84ccw")
 hframes = 4
 vframes = 7
+frame = 1
 
 [node name="HealthComponent" parent="." instance=ExtResource("2_khcag")]
 
@@ -64,6 +149,7 @@ script = ExtResource("8_adiwv")
 [node name="Attack" type="Node" parent="StateMachine"]
 script = ExtResource("9_k6tq6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_3tfwx")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3d4sk")
+}

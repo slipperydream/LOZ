@@ -5,10 +5,12 @@ class_name Playerd
 signal died
 signal hit
 
-@export var speed : int = 300
+@export var speed : int = 50
 
 @onready var health = $HealthComponent
 @onready var sprite = $Sprite2D
+@onready var animation = $AnimationPlayer
+@onready var screen_size : Vector2 = get_viewport_rect().size
 
 func _ready():
 	pass
