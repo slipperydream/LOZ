@@ -9,13 +9,20 @@ signal hit
 @export var max_follow_distance : int = 50
 @export var awareness_distance : int = 30
 @export var attack_distance : int = 5
+@export var sprite_sheet : Texture2D
+@export var hframes : int = 4
+@export var vframes : int = 7
 
 @onready var health = $HealthComponent
 @onready var sprite = $Sprite2D
 @onready var player = get_tree().get_first_node_in_group("player")
 
 func _ready():
-	pass
+	if sprite_sheet:
+		sprite.texture = sprite_sheet
+	sprite.hframes = hframes
+	sprite.vframes = vframes
+	
 
 func _physics_process(delta):
 	move_and_slide()

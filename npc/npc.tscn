@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://0phnbqapnxwp"]
+[gd_scene load_steps=12 format=3 uid="uid://0phnbqapnxwp"]
 
 [ext_resource type="Script" path="res://npc/npc.gd" id="1_hjq2d"]
 [ext_resource type="PackedScene" uid="uid://ctc48s6nmiom3" path="res://components/health_component.tscn" id="2_1tw0k"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dsbuqlt6yb7a8" path="res://components/hitbox_component.tscn" id="3_ppltn"]
 [ext_resource type="PackedScene" uid="uid://dyb73gwdeh1c2" path="res://components/hurtbox_component.tscn" id="4_6s0pm"]
 [ext_resource type="Script" path="res://components/StateMachine.gd" id="5_gqd5q"]
+[ext_resource type="Script" path="res://npc/states/NPCIdle.gd" id="7_4d22w"]
+[ext_resource type="Script" path="res://npc/states/NPCFollow.gd" id="8_ivhmp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7kvgn"]
 size = Vector2(10, 15)
@@ -44,7 +46,15 @@ debug_color = Color(0.988235, 0.0862745, 0.180392, 0.419608)
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("5_gqd5q")
-initial_state = NodePath("")
+initial_state = NodePath("NPCIdle")
+
+[node name="NPCIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("npc")]
+script = ExtResource("7_4d22w")
+npc = NodePath("../..")
+
+[node name="NPCTalking" type="Node" parent="StateMachine" node_paths=PackedStringArray("npc")]
+script = ExtResource("8_ivhmp")
+npc = NodePath("../..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3tfwx")

@@ -5,6 +5,7 @@ class_name NPCIdle
 
 var move_direction : Vector2 = Vector2.ZERO
 var wander_time : float = 0
+var is_talking : bool = false
 
 func enter():
 	randomize_wander()
@@ -22,12 +23,10 @@ func update(delta):
 		randomize_wander()
 	
 func physics_update(delta):
-	if enemy:
-		enemy.velocity = move_direction * enemy.speed
-		
-	var distance = player.global_position - enemy.global_position
-	if distance.length() < enemy.max_follow_distance:
-		Transitioned.emit(self, "Follow")
+	if npc:
+		npc.velocity = move_direction * npc.speed
+	if is_talking:
+		Transitioned.emit(self, "talking")
 
 func randomize_wander():
 	move_direction = Vector2(randf_range(-1,1), randf_range(-1,1)).normalized()

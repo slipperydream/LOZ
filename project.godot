@@ -16,9 +16,9 @@ config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=800
-window/size/viewport_height=600
-window/stretch/mode="viewport"
+window/size/viewport_width=256
+window/size/viewport_height=256
+window/stretch/mode="canvas_items"
 
 [input]
 
@@ -56,7 +56,3 @@ roll={
 "deadzone": 0.5,
 "events": []
 }
-
-[rendering]
-
-renderer/rendering_method="mobile"
