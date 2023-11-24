@@ -1,15 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://dj17smwe1o4sc"]
+[gd_scene load_steps=12 format=3 uid="uid://dj17smwe1o4sc"]
 
 [ext_resource type="Script" path="res://enemy/enemy.gd" id="1_muxvj"]
-[ext_resource type="Texture2D" uid="uid://dyusfof6hdyfo" path="res://Zeldisaac/Character.png" id="2_l1d1m"]
 [ext_resource type="PackedScene" uid="uid://ctc48s6nmiom3" path="res://components/health_component.tscn" id="3_pkijh"]
 [ext_resource type="PackedScene" uid="uid://dsbuqlt6yb7a8" path="res://components/hitbox_component.tscn" id="4_68rfk"]
 [ext_resource type="PackedScene" uid="uid://dyb73gwdeh1c2" path="res://components/hurtbox_component.tscn" id="5_63a0m"]
-[ext_resource type="Script" path="res://states/StateMachine.gd" id="6_7r1pr"]
-[ext_resource type="Script" path="res://states/Idle.gd" id="7_j3i03"]
-[ext_resource type="Script" path="res://states/Move.gd" id="8_4l32a"]
-[ext_resource type="Script" path="res://states/Roll.gd" id="9_vsul7"]
-[ext_resource type="Script" path="res://states/Attack.gd" id="10_ttb8o"]
+[ext_resource type="Script" path="res://components/StateMachine.gd" id="6_guat2"]
+[ext_resource type="Script" path="res://enemy/states/EnemyAttack.gd" id="7_eiesf"]
+[ext_resource type="Script" path="res://enemy/states/EnemyIdle.gd" id="8_8e34u"]
+[ext_resource type="Script" path="res://enemy/states/EnemyFollow.gd" id="9_ohffc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7kvgn"]
 size = Vector2(10, 15)
@@ -20,13 +18,12 @@ size = Vector2(24, 37)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3tfwx"]
 size = Vector2(24, 37)
 
-[node name="Enemy" type="CharacterBody2D" groups=["player"]]
+[node name="NPC" type="CharacterBody2D" groups=["player"]]
 position = Vector2(300, 300)
 script = ExtResource("1_muxvj")
 speed = 80
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_l1d1m")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_pkijh")]
 
@@ -45,20 +42,23 @@ shape = SubResource("RectangleShape2D_naac7")
 debug_color = Color(0.988235, 0.0862745, 0.180392, 0.419608)
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("6_7r1pr")
+script = ExtResource("6_guat2")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource("7_j3i03")
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("7_eiesf")
+enemy = NodePath("../..")
 
-[node name="Move" type="Node" parent="StateMachine"]
-script = ExtResource("8_4l32a")
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("8_8e34u")
+enemy = NodePath("../..")
 
-[node name="Roll" type="Node" parent="StateMachine"]
-script = ExtResource("9_vsul7")
-
-[node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("10_ttb8o")
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("9_ohffc")
+enemy = NodePath("../..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3tfwx")
+
+[connection signal="hit" from="HealthComponent" to="." method="_on_health_component_hit"]
+[connection signal="killed" from="HealthComponent" to="." method="_on_health_component_killed"]

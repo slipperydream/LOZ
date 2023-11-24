@@ -1,14 +1,18 @@
 extends CharacterBody2D
 
-class_name Playerd
+class_name NPC
 
 signal died
 signal hit
 
-@export var speed : int = 300
+@export var speed : int = 30
+@export var max_follow_distance : int = 50
+@export var awareness_distance : int = 30
+@export var attack_distance : int = 5
 
 @onready var health = $HealthComponent
 @onready var sprite = $Sprite2D
+@onready var player = get_tree().get_first_node_in_group("player")
 
 func _ready():
 	pass
@@ -23,10 +27,8 @@ func _on_health_component_hit():
 	if health.invulnerable:
 		return
 	else:
-		scale.x *= 0.33
+		# play damage animation
+		pass
 
-func _on_pickup_area_entered(area):
-#	if area is Item:
-#		$AnimationPlayer.play("pickup")
-	pass
+
 
